@@ -232,7 +232,8 @@ player.on('ended', async function () {
     console.log('primary play list is', player.primaryPlaylist);
     player.playlist(player.primaryPlaylist);
     player.isPrimaryPlaylist = true;
-    await gotoPlayableVideo(player.primaryPlaylist, 0);
+    const lastPlayedIndex = await getLastPlayedIndex();
+    await gotoPlayableVideo(player.primaryPlaylist, lastPlayedIndex);
   } else if (await isCached(playlist[nextIndex].sources[0].src)) {
     console.log('video is cached, index is', nextIndex);
     if (currentIndex === nextIndex) {
