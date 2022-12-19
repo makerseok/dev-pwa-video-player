@@ -227,13 +227,16 @@ player.on('ended', async function () {
   const currentItem = playlist[currentIndex];
   const playOn = currentItem.report.PLAY_ON;
 
+  if (player.isPrimaryPlaylist) {
+    await storeLastPlayedVideo(currentIndex, playOn);
+  }
   if (playlist[currentIndex].periodYn === 'N') {
     console.log('periodYn is N!');
     console.log('primary play list is', player.primaryPlaylist);
     player.playlist(player.primaryPlaylist);
     player.isPrimaryPlaylist = true;
-    const lastPlayedIndex = await getLastPlayedIndex();
-    await gotoPlayableVideo(player.primaryPlaylist, lastPlayedIndex);
+    const lastPlayed = await getLastPlayedIndex();
+    await gotoPlayableVideo(player.primaryPlaylist, lastPlayed.videoIndex);
   } else if (await isCached(playlist[nextIndex].sources[0].src)) {
     console.log('video is cached, index is', nextIndex);
     if (currentIndex === nextIndex) {
@@ -243,9 +246,6 @@ player.on('ended', async function () {
   } else {
     console.log('video is not cached');
     await gotoPlayableVideo(playlist, currentIndex);
-  }
-  if (player.isPrimaryPlaylist) {
-    storeLastPlayedVideo(currentIndex, playOn);
   }
   addReport(currentItem);
 });
