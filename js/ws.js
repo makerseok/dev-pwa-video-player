@@ -5,7 +5,7 @@ let mqtt;
 
 function onConnect() {
   console.log('connected!');
-  let mainTopic = `/ad/${player.deviceId}/+`;
+  let mainTopic = `/ad/${player.companyId}/${player.deviceId}/+`;
   mqtt.subscribe(mainTopic);
   console.log(mainTopic + ' subscribed!');
 }
@@ -15,12 +15,18 @@ function onFailure() {
 }
 
 async function onMessageArrived(res) {
-  const event = res.destinationName.replace(/\/ad\/[a-zA-Z0-9]*\//, '');
+  const event = res.destinationName.replace(
+    /\/ad\/[a-zA-Z0-9]*\/[a-zA-Z0-9]*\//,
+    '',
+  );
   const payload = JSON.parse(res.payloadString);
   const uuid = payload.UUID;
   const result = { event, uuid };
 
   const count = await db.websockets.where(result).count();
+  console.log('event', event);
+  console.log('payload', payload);
+  console.log('count', count);
   if (count === 0) {
     try {
       await db.websockets.add(result);
