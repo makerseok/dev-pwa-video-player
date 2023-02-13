@@ -380,7 +380,7 @@ player.on('ended', async function () {
     player.type = nextPlaylist.type;
     player.playlist(nextPlaylist.playlist);
     const lastPlayed = await getLastPlayedIndex(nextPlaylist.playlist);
-    await gotoPlayableVideo(nextPlaylist.playlist, lastPlayed.videoIndex);
+    await gotoPlayableVideo(nextPlaylist.playlist, lastPlayed);
   } else if (await isCached(playlist[nextIndex].sources[0].src)) {
     console.log('video is cached, index is', nextIndex);
     if (currentIndex === nextIndex) {
@@ -471,8 +471,8 @@ const initPlayerPlaylist = (playlist, screen) => {
   player.playlist.repeat(true);
   getLastPlayedIndex(playlist)
     .then(async lastPlayed => {
-      console.log('######## last played index is', lastPlayed.videoIndex);
-      await gotoPlayableVideo(playlist, lastPlayed.videoIndex);
+      console.log('######## last played index is', lastPlayed);
+      await gotoPlayableVideo(playlist, lastPlayed);
       if (player.paused()) {
         await player.play();
       }
@@ -657,7 +657,7 @@ function cronVideo(date, playlist, type) {
             player.type = type;
             player.radPlaylist = context;
             const lastPlayed = await getLastPlayedIndex(context);
-            await gotoPlayableVideo(context, lastPlayed.videoIndex);
+            await gotoPlayableVideo(context, lastPlayed);
           }
         }
         // player.playlist(context);
@@ -668,7 +668,7 @@ function cronVideo(date, playlist, type) {
         //   const lastPlayed = await getLastPlayedIndex();
         //   await gotoPlayableVideo(
         //     player.primaryPlaylist,
-        //     lastPlayed.videoIndex,
+        //     lastPlayed,
         //   );
         // } else {
         //   player.isPrimaryPlaylist = false;
