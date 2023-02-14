@@ -683,19 +683,19 @@ const postPositionLocked = locked => {
 function findData(item, target, todo) {
   let array = Object.keys(item); //키값을 가져옴
   for (let i of array) {
-    if (i === target) {
-      if (item[i]) {
-        // 키값이 찾고자 하는 키랑 일치하면
-        todo(i, item[i], item); //콜백: 키, 값, 객체
-      } else if (item[i].constructor === Object) {
-        //객체면 다시 순회
-        findData(item[i], target, todo);
-      } else if (item[i].constructor === Array) {
-        //배열이면 배열에서 순회
-        let miniArray = item[i];
-        for (let f in miniArray) {
-          findData(miniArray[f], target, todo);
-        }
+    if (!item[i]) {
+      continue;
+    } else if (i === target) {
+      // 키값이 찾고자 하는 키랑 일치하면
+      todo(i, item[i], item); //콜백: 키, 값, 객체
+    } else if (item[i].constructor === Object) {
+      //객체면 다시 순회
+      findData(item[i], target, todo);
+    } else if (item[i].constructor === Array) {
+      //배열이면 배열에서 순회
+      let miniArray = item[i];
+      for (let f in miniArray) {
+        findData(miniArray[f], target, todo);
       }
     }
   }
