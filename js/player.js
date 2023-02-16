@@ -115,6 +115,10 @@ const addMinutes = (date, min) => {
   return addedDate;
 };
 
+const addMilliseconds = (date, ms) => {
+  return new Date(date.getTime() + ms);
+};
+
 /**
  * Date 객체를 입력받아 "hh:MM:ss" 형식의 문자열을 반환
  *

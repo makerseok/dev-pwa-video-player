@@ -10,7 +10,7 @@ const deviceConfigMapping = {
   on: '시작시간',
   off: '종료시간',
 };
-
+let refreshTime;
 const playerDOM = document.querySelector('#modal-player');
 
 const resizeObserver = new ResizeObserver(entries => {
@@ -35,6 +35,11 @@ var intersectionObserver = new IntersectionObserver(function (entries) {
 });
 intersectionObserver.observe(playerDOM);
 
+document.addEventListener('DOMContentLoaded', function () {
+  document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+  initTime();
+});
+
 /**
  * player가 잠금 상태가 아닐 경우 위치 및 크기 정보를 반올림한 값을 서버로 업로드
  * 업로드 성공 시 ui에 반영
@@ -51,6 +56,39 @@ const applyPosition = position => {
     updateDevicePositionUi(position);
   });
 };
+
+async function initTime() {
+  const date = new Date();
+  const { data } = await axios.get(BASE_URL + DATE_URL);
+  const time = data.timestamp;
+  $('#server-time').text(addHyphen(time));
+  $('#local-time').text(
+    `${addHyphen(getFormattedDate(date))}.${String(
+      date.getMilliseconds(),
+    ).padStart(3, '0')}`,
+  );
+  clearInterval(refreshTime);
+  refreshTime = setInterval(() => {
+    updateTime(95);
+  }, 95);
+}
+
+function updateTime(interval) {
+  const localDate = new Date();
+  const serverDate = new Date($('#server-time').text());
+  const nextServerDate = addMilliseconds(serverDate, interval);
+  $('#server-time').text(
+    `${addHyphen(getFormattedDate(nextServerDate))}.${String(
+      nextServerDate.getMilliseconds(),
+    ).padStart(3, '0')}`,
+  );
+  $('#local-time').text(
+    `${addHyphen(getFormattedDate(localDate))}.${String(
+      localDate.getMilliseconds(),
+    ).padStart(3, '0')}`,
+  );
+  $('#time-difference').text(nextServerDate - localDate);
+}
 
 /**
  * 입력받은 position 객체를 player DOM 요소에 적용

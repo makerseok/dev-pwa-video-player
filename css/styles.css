@@ -34,6 +34,14 @@ nav .sidenav-trigger {
   margin: 0;
 }
 
+/* title */
+.title {
+  display: inline-block;
+  font-size: 2.1rem;
+  padding: 0;
+  margin-right: 0.5rem;
+}
+
 .videos {
   margin-top: 2rem;
   margin-bottom: 4rem;
@@ -137,6 +145,15 @@ nav .sidenav-trigger {
   margin: 0px !important;
   z-index: 16777271;
   position: fixed;
+}
+
+/* time */
+#time-container {
+  padding-left: 3rem;
+}
+
+.time-btn-container {
+  margin-top: 0.5rem;
 }
 
 /* report button */

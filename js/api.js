@@ -10,6 +10,7 @@ const CEADS_URL = 'ceads';
 const CPADS_URL = 'cpads';
 const REPORT_URL = 'report';
 const WEBSOCKET_URL = 'websocket';
+const DATE_URL = 'date';
 
 const HS_API_KEY =
   '$2b$12$y4OZHQji3orEPdy2FtQJye:8f3bc93a-3b31-4323-b1a0-fd20584d9de4';
