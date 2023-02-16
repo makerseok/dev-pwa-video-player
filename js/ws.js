@@ -1,5 +1,6 @@
 const host = 'cs.raiid.ai';
 const port = 9001;
+let mqttRetryInterval = 1000;
 
 let mqtt;
 
@@ -12,6 +13,10 @@ function onConnect() {
 
 function onFailure() {
   console.log('Connection Failed!');
+  setTimeout(() => {
+    initWebsocket();
+    mqttRetryInterval = Math.min(mqttRetryInterval * 2, 12000);
+  }, mqttRetryInterval);
 }
 
 async function onMessageArrived(res) {
@@ -59,6 +64,8 @@ const initWebsocket = () => {
     onFailure: onFailure,
     userName: 'spacebank',
     password: 'demo00',
+    reconnect: true,
+    // reconnectInterval: 10,
   };
   const clientId = 'client-' + Math.random().toString().split('.')[1];
 
