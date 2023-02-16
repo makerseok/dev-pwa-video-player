@@ -59,9 +59,6 @@ const applyPosition = position => {
 
 async function initTime() {
   const date = new Date();
-  const { data } = await axios.get(BASE_URL + DATE_URL);
-  const time = data.timestamp;
-  $('#server-time').text(addHyphen(time));
   $('#local-time').text(
     `${addHyphen(getFormattedDate(date))}.${String(
       date.getMilliseconds(),
@@ -73,21 +70,13 @@ async function initTime() {
   }, 95);
 }
 
-function updateTime(interval) {
+function updateTime() {
   const localDate = new Date();
-  const serverDate = new Date($('#server-time').text());
-  const nextServerDate = addMilliseconds(serverDate, interval);
-  $('#server-time').text(
-    `${addHyphen(getFormattedDate(nextServerDate))}.${String(
-      nextServerDate.getMilliseconds(),
-    ).padStart(3, '0')}`,
-  );
   $('#local-time').text(
     `${addHyphen(getFormattedDate(localDate))}.${String(
       localDate.getMilliseconds(),
     ).padStart(3, '0')}`,
   );
-  $('#time-difference').text(nextServerDate - localDate);
 }
 
 /**
