@@ -286,6 +286,7 @@ async function initPlayer(crads, device, sudo = false) {
   const onDate = sethhMMss(new Date(), on);
   const offDate = sethhMMss(new Date(), off);
 
+  player.isDawn = offDate <= onDate;
   player.runon = Math.floor(onDate.getTime() / 1000);
   player.runoff =
     offDate > onDate
@@ -428,8 +429,8 @@ async function schedulePlaylists(playlists, currentTime) {
     const startDate = new Date(playlist.start);
     const hhMMssEnd = gethhMMss(new Date(playlist.end));
     if (
-      currentTime >= playlist.end &&
-      new Date(player.runon * 1000) >= new Date(playlist.end)
+      player.isDawn &&
+      new Date(player.runon * 1000) > new Date(playlist.start)
     ) {
       const nextDayStart = formatDatePlayAtDawn(playlist.start);
       console.log('Next Day Early Playlists');
