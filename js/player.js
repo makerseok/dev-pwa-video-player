@@ -653,15 +653,15 @@ function cronVideo(date, playlist, type) {
             player.currentTime(0);
           }
         } else if (type === 'rad') {
-          if (player.type !== 'rad') {
-            player.playlistQueue.push(queueItem);
-          } else {
+          if (player.type === 'rad' || player.type === undefined) {
             player.playlist(context);
             player.isEnd = false;
             player.type = type;
             player.radPlaylist = context;
             const lastPlayed = await getLastPlayedIndex(context);
             await gotoPlayableVideo(context, lastPlayed);
+          } else {
+            player.playlistQueue.push(queueItem);
           }
         }
         // player.playlist(context);
