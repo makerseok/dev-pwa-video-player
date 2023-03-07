@@ -310,7 +310,10 @@ player.on('loadeddata', async function () {
         }
       }
     }
-    if (playlist[previousIndex].isHivestack === 'Y') {
+    if (
+      playlist[previousIndex].isHivestack === 'Y' &&
+      previousIndex != nextIndex
+    ) {
       playlist[previousIndex].sources[0].src = null;
       playlist[previousIndex].reportUrl = null;
       playlist[previousIndex].report.HIVESTACK_URL = null;
